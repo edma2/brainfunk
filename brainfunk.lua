@@ -69,19 +69,8 @@ local function reverseIfNonZero(state)
   end
 end
 
-local function isPrintableAscii(c)
-  return c >= 32 and c <= 126 or c == 10 -- newline
-end
-
 local function dataWrite(state)
-  local n = state.data[state.data.pointer]
-  local c
-  if isPrintableAscii(n) then
-    c = string.char(n)
-  else
-    c = '\\' .. n
-  end
-  state.output = state.output .. c
+  table.insert(state.output, state.data[state.data.pointer])
 end
 
 local instructionSet = {
@@ -105,7 +94,7 @@ function M.eval(s, input)
   local code = tokens(s)
   local length = #code
   local data = setmetatable({}, {__index = function () return 0 end})
-  local state = {code = code, data = data, output = '', input = input and input or ''}
+  local state = {code = code, data = data, output = {}, input = input and input or ''}
   code.pointer = 1
   data.pointer = 1
   repeat

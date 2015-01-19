@@ -1,11 +1,11 @@
-brainfunk = require 'brainfunk'
+brainfunk = require('brainfunk')
 
 describe("brainfunk", function()
   it("adds 2", function()
-    assert.are.same('\\2', brainfunk.eval('++.'))
+    assert.are.same({2}, brainfunk.eval('++.'))
   end)
   it("loops", function()
-    assert.are.same('\\8\\1', brainfunk.eval('++[>++++<-]>.<+.'))
+    assert.are.same({8,1}, brainfunk.eval('++[>++++<-]>.<+.'))
   end)
   it("nested loops", function()
     local s = brainfunk.eval([[
@@ -20,7 +20,7 @@ describe("brainfunk", function()
       ]
       >>. print cell #2
     ]])
-    assert.are.same('\\16', s)
+    assert.are.same({16}, s)
   end)
   it("hello world", function ()
     local helloworld = brainfunk.eval([[
@@ -58,6 +58,6 @@ Pointer :   ^
 >>+.                    Add 1 to Cell #5 gives us an exclamation point
 >++.                    And finally a newline from Cell #6
     ]])
-    assert.are.same('Hello World!\n', helloworld)
+    assert.are.same({72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 33, 10}, helloworld)
   end)
 end)
