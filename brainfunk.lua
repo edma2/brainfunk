@@ -5,7 +5,7 @@ local function tokens(s)
   local ts = {}
   local j = 1
   for i = 1, #s do
-    c = string.sub(s, i, i)
+    local c = string.sub(s, i, i)
     if string.find('><+-.,][', c, 1, true) then
       ts[j] = c
       j = j + 1
@@ -15,7 +15,7 @@ local function tokens(s)
 end
 
 local function dataAdd(state, amount)
-  index = state.data.pointer
+  local index = state.data.pointer
   state.data[index] = state.data[index] + amount
 end
 
@@ -40,10 +40,10 @@ local function codeShiftLeft(state)
 end
 
 local function repeatMove(state, move, terminateAt)
-  depth = 0
-  matchingPair = terminateAt == ']' and '[' or ']'
+  local depth = 0
+  local matchingPair = terminateAt == ']' and '[' or ']'
   repeat
-    inst = state.code[state.code.pointer]
+    local inst = state.code[state.code.pointer]
     if inst == matchingPair then
       depth = depth + 1
     elseif inst == terminateAt then
