@@ -1,7 +1,7 @@
 -- bf.lua
 -- brainfuck interpreter
 
-cells = {pos = 1}
+cells = {pointer = 1}
 setmetatable(cells, {__index = function () return 0 end })
 
 Program = {}
