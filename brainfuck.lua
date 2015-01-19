@@ -40,9 +40,17 @@ local function codeShiftLeft(state)
 end
 
 local function repeatMove(state, move, terminateAt)
+  depth = 0
+  matchingPair = terminateAt == ']' and '[' or ']'
   repeat
+    inst = state.code[state.code.pointer]
+    if inst == matchingPair then
+      depth = depth + 1
+    elseif inst == terminateAt then
+      depth = depth - 1
+    end
     move(state)
-  until state.code[state.code.pointer] == terminateAt
+  until depth == 0
 end
 
 local function forwardIfZero(state)
