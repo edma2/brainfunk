@@ -103,7 +103,7 @@ function M.eval(s, input)
   local code = tokens(s)
   local length = #code
   local data = setmetatable({}, {__index = function () return 0 end})
-  local state = {code = code, data = data, output = {}, input = input and input or {}}
+  local state = {code = code, data = data, output = {}, input = input or {}}
   code.pointer = 1
   data.pointer = 1
   repeat
