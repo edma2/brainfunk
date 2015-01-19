@@ -4,7 +4,7 @@ local function isToken(c)
   return string.find('><+-.,][', c, 1, true)
 end
 
--- Returns an array with valid Brainfuck characters.
+-- Returns an array of Brainfuck characters.
 local function tokens(s)
   local ts = {}
   local j = 1
