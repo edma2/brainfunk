@@ -1,12 +1,16 @@
 local M = {}
 
+local function isToken(c)
+  return string.find('><+-.,][', c, 1, true)
+end
+
 -- Returns an array with valid Brainfuck characters.
 local function tokens(s)
   local ts = {}
   local j = 1
   for i = 1, #s do
     local c = string.sub(s, i, i)
-    if string.find('><+-.,][', c, 1, true) then
+    if isToken(c) then
       ts[j] = c
       j = j + 1
     end
