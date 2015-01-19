@@ -65,8 +65,18 @@ local function reverseIfNonZero(state)
   end
 end
 
+local function isPrintableAscii(c)
+  return c >= 32 and c <= 126 or c == 10 -- newline
+end
+
 local function dataWrite(state)
-  c = state.data[state.data.pointer]
+  local n = state.data[state.data.pointer]
+  local c
+  if isPrintableAscii(n) then
+    c = string.char(n)
+  else
+    c = '\\' .. n
+  end
   state.output = state.output .. c
 end
 
