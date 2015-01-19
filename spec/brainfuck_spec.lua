@@ -20,6 +20,6 @@ describe("brainfuck", function()
       ]
       >>. print cell #2
     ]])
-    assert.are.same('16' ,s)
+    assert.are.same('16', s)
   end)
 end)
