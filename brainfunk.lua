@@ -73,6 +73,14 @@ local function dataWrite(state)
   table.insert(state.output, state.data[state.data.pointer])
 end
 
+local function readInputByte(state)
+  return table.remove(state.input)
+end
+
+local function dataRead(state)
+  state.data[state.data.pointer] = readInputByte(state)
+end
+
 local instructionSet = {
   ['>'] = dataShiftRight,
   ['<'] = dataShiftLeft,
@@ -81,6 +89,7 @@ local instructionSet = {
   ['['] = forwardIfZero,
   [']'] = reverseIfNonZero,
   ['.'] = dataWrite,
+  [','] = dataRead
 }
 
 -- Process one instruction.
@@ -94,7 +103,7 @@ function M.eval(s, input)
   local code = tokens(s)
   local length = #code
   local data = setmetatable({}, {__index = function () return 0 end})
-  local state = {code = code, data = data, output = {}, input = input and input or ''}
+  local state = {code = code, data = data, output = {}, input = input and input or {}}
   code.pointer = 1
   data.pointer = 1
   repeat
