@@ -1,5 +1,6 @@
 local M = {}
 
+-- Returns an array with valid Brainfuck characters.
 local function tokens(s)
   local ts = {}
   local j = 1
@@ -13,72 +14,69 @@ local function tokens(s)
   return ts
 end
 
-local function noop()
-  print 'ok'
+local function dataAdd(state, amount)
+  index = state.data.pointer
+  state.data[index] = state.data[index] + amount
 end
 
-local function incrDataPointer(state)
+local function dataIncr(state) dataAdd(state, 1) end
+
+local function dataDecr(state) dataAdd(state, -1) end
+
+local function dataShiftRight(state)
   state.data.pointer = state.data.pointer + 1
 end
 
-local function decrDataPointer(state)
+local function dataShiftLeft(state)
   state.data.pointer = state.data.pointer - 1
 end
 
-local function incrCodePointer(state)
+local function codeShiftRight(state)
   state.code.pointer = state.code.pointer + 1
 end
 
-local function decrCodePointer(state)
+local function codeShiftLeft(state)
   state.code.pointer = state.code.pointer - 1
 end
 
-local function incrData(state)
-  index = state.data.pointer
-  state.data[index] = state.data[index] + 1
-end
-
-local function decrData(state)
-  index = state.data.pointer
-  state.data[index] = state.data[index] - 1
+local function repeatMove(state, move, terminateAt)
+  repeat
+    move(state)
+  until state.code[state.code.pointer] == terminateAt
 end
 
 local function forwardIfZero(state)
   if state.data[state.data.pointer] == 0 then
-    repeat
-      incrCodePointer(state)
-    until state.code[state.code.pointer] == ']'
+    repeatMove(state, codeShiftRight, ']')
   end
 end
 
-local function backIfNonZero(state)
+local function reverseIfNonZero(state)
   if not (state.data[state.data.pointer] == 0) then
-    repeat
-      decrCodePointer(state)
-    until state.code[state.code.pointer] == '['
+    repeatMove(state, codeShiftLeft, '[')
   end
 end
 
-local function printData(state)
+local function dataWrite(state)
   c = state.data[state.data.pointer]
   state.output = state.output .. c
 end
 
-local instructions = {
-  ['>'] = incrDataPointer,
-  ['<'] = decrDataPointer,
-  ['+'] = incrData,
-  ['-'] = decrData,
+local instructionSet = {
+  ['>'] = dataShiftRight,
+  ['<'] = dataShiftLeft,
+  ['+'] = dataIncr,
+  ['-'] = dataDecr,
   ['['] = forwardIfZero,
-  [']'] = backIfNonZero,
-  ['.'] = printData,
-  [','] = noop
+  [']'] = reverseIfNonZero,
+  ['.'] = dataWrite,
 }
 
+-- Process one instruction.
 local function step(state)
   local inst = state.code[state.code.pointer]
-  instructions[inst](state)
-  incrCodePointer(state)
+  instructionSet[inst](state)
+  codeShiftRight(state)
 end
 
 function M.eval(s, input)
