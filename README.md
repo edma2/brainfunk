@@ -1,3 +1,1 @@
-## A collection of tiny programs written in Lua for learning purposes.
-
-* bf - brainfuck interpreter
+Brainfuck interpeter in Lua.
