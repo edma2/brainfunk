@@ -60,7 +60,8 @@ local function backIfNonZero(state)
 end
 
 local function printData(state)
-  io.write(state.data[state.data.pointer])
+  c = state.data[state.data.pointer]
+  state.output = state.output .. c
 end
 
 local instructions = {
@@ -80,16 +81,17 @@ local function step(state)
   incrCodePointer(state)
 end
 
-function M.eval(s)
+function M.eval(s, input)
   local code = tokens(s)
   local length = #code
   local data = setmetatable({}, {__index = function () return 0 end})
-  local state = {code = code, data = data}
+  local state = {code = code, data = data, output = '', input = input and input or ''}
   code.pointer = 1
   data.pointer = 1
   repeat
     step(state)
   until code.pointer > length
+  return state.output
 end
 
 return M
