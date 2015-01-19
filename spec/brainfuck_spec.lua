@@ -11,11 +11,14 @@ local function evalWithOutput(src, fn)
 end
 
 describe("brainfuck", function()
-  it("adds two to cell 1", function()
+  it("adds 2", function()
     evalWithOutput('++.', function (output)
       assert.are.same('2', output)
     end)
   end)
+  it("loops", function()
+    evalWithOutput('++[>+++<-]>.', function (output)
+      assert.are.same('8', output)
+    end)
+  end)
 end)
-
---module.eval('++[>++++<-]+++.')
