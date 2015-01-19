@@ -1,14 +1,14 @@
-brainfuck = require 'brainfuck'
+brainfunk = require 'brainfunk'
 
-describe("brainfuck", function()
+describe("brainfunk", function()
   it("adds 2", function()
-    assert.are.same('\\2', brainfuck.eval('++.'))
+    assert.are.same('\\2', brainfunk.eval('++.'))
   end)
   it("loops", function()
-    assert.are.same('\\8\\1', brainfuck.eval('++[>++++<-]>.<+.'))
+    assert.are.same('\\8\\1', brainfunk.eval('++[>++++<-]>.<+.'))
   end)
   it("nested loops", function()
-    local s = brainfuck.eval([[
+    local s = brainfunk.eval([[
       ++++  add 4 to cell #0 (initialize outer loop counter to 4)
       [
         >++ add 2 to cell #1 (initialize inner loop counter to 2)
@@ -23,7 +23,7 @@ describe("brainfuck", function()
     assert.are.same('\\16', s)
   end)
   it("hello world", function ()
-    local helloworld = brainfuck.eval([[
+    local helloworld = brainfunk.eval([[
 +++++ +++               Set Cell #0 to 8
 [
     >++++               Add 4 to Cell #1; this will always set Cell #1 to 4
