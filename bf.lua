@@ -1,6 +1,9 @@
 -- bf.lua
 -- brainfuck interpreter
 
+cells = {}
+setmetatable(cells, {__index = function () return 0 end })
+
 Program = {}
 
 function Program:incr()
@@ -41,13 +44,3 @@ function run(program)
 end
 
 run(program)
-
--- array of cells, where each cell is a one character string
--- when a cell is first written to, it is written into the table.
-cells = {}
-setmetatable(cells, {__index = function () return 0 end })
-
--- while programIndex < #program do
---   print(program[programIndex])
---   programIndex = programIndex + 1
--- end
