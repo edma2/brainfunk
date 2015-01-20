@@ -19,8 +19,8 @@ local function tokens(s)
 end
 
 local function dataAdd(state, amount)
-  local index = state.data.pointer
-  state.data[index] = state.data[index] + amount
+  local i = state.data.pointer
+  state.data[i] = state.data[i] + amount
 end
 
 local function dataIncr(state) dataAdd(state, 1) end
@@ -64,7 +64,7 @@ local function forwardIfZero(state)
 end
 
 local function reverseIfNonZero(state)
-  if not (state.data[state.data.pointer] == 0) then
+  if state.data[state.data.pointer] ~= 0 then
     repeatMove(state, codeShiftLeft, '[')
   end
 end
