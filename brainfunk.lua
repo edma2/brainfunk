@@ -99,6 +99,14 @@ local function step(state)
   codeShiftRight(state)
 end
 
+local function stringToTable(s)
+  local t = {}
+  for i = 1, #s do
+    t[i] = string.byte(s,i, i)
+  end
+  return t
+end
+
 local debug = os.getenv("BRAINFUNK_DEBUG") == "1"
 local dump
 
@@ -115,6 +123,9 @@ function M.eval(s, input)
   local code = tokens(s)
   local length = #code
   local data = setmetatable({}, {__index = function () return 0 end})
+  if type(input) == 'string' then
+    input = stringToTable(input)
+  end
   local state = {code = code, data = data, output = {}, input = input or {}}
   code.pointer = 1
   data.pointer = 1
