@@ -99,6 +99,18 @@ local function step(state)
   codeShiftRight(state)
 end
 
+local debug = os.getenv("BRAINFUNK_DEBUG") == "1"
+local dump
+
+local function debugDump(t)
+  if debug then
+    if dump == nil then
+      dump = require('pl.pretty').dump
+    end
+    dump(t)
+  end
+end
+
 function M.eval(s, input)
   local code = tokens(s)
   local length = #code
@@ -109,6 +121,7 @@ function M.eval(s, input)
   repeat
     step(state)
   until code.pointer > length
+  debugDump(state)
   return state.output
 end
 
