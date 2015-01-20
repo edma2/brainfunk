@@ -74,7 +74,7 @@ local function dataWrite(state)
 end
 
 local function readInputByte(state)
-  return table.remove(state.input)
+  return table.remove(state.input, 1)
 end
 
 local function dataRead(state)
